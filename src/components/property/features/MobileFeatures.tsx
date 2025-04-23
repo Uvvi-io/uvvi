@@ -3,9 +3,12 @@ import React from 'react';
 import { Coffee, Building, Trees, ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { featuresData } from './propertyFeaturesData';
 
-const MobileFeatures = () => {
+interface MobileFeaturesProps {
+  featuresData?: Record<string, { items: string[] }>;
+}
+
+const MobileFeatures = ({ featuresData = {} }: MobileFeaturesProps) => {
   const { t } = useLanguage();
 
   const icons = {

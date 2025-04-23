@@ -3,9 +3,12 @@ import React from 'react';
 import { Coffee, Building, Trees } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { featuresData } from './propertyFeaturesData';
 
-const DesktopFeatures = () => {
+interface DesktopFeaturesProps {
+  featuresData?: Record<string, { items: string[] }>;
+}
+
+const DesktopFeatures = ({ featuresData = {} }: DesktopFeaturesProps) => {
   const { t } = useLanguage();
 
   return (

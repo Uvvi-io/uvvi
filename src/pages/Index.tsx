@@ -25,11 +25,11 @@ const Index = () => {
             
             {/* Right Column (1/3 width on large screens) */}
             <div className="space-y-6">
-              <div id="contact-agent">
-                <ContactForm />
-              </div>
               <div id="property-map">
                 <PropertyMap />
+              </div>
+              <div id="contact-agent">
+                <ContactForm />
               </div>
             </div>
           </div>
@@ -40,3 +40,4 @@ const Index = () => {
 };
 
 export default Index;
+

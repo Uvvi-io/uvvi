@@ -1,4 +1,3 @@
-
 import { TranslationDict } from './types';
 
 export const propertyTranslations: TranslationDict = {
@@ -91,9 +90,13 @@ export const propertyTranslations: TranslationDict = {
   },
   
   // 3D Tour
+  'property.viewTour': {
+    en: 'View 3D Tour',
+    es: 'Ver Tour 3D',
+  },
   'property.3dTour': {
     en: '3D Virtual Tour',
-    es: 'Recorrido Virtual 3D',
+    es: 'Tour Virtual 3D',
   },
   
   // Map related translations

@@ -2,7 +2,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
-import { FootprintsIcon, Bike, Bus, Store, GasStation, Building2 } from 'lucide-react';
+import { FootprintsIcon, Bike, Bus, Store, Fuel, Building2 } from 'lucide-react';
 
 const NeighborhoodInfo = () => {
   const { t } = useLanguage();
@@ -52,7 +52,7 @@ const NeighborhoodInfo = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <GasStation size={20} className="text-estate-primary" />
+            <Fuel size={20} className="text-estate-primary" />
             <div>
               <p className="text-sm text-estate-gray-dark">{t('neighborhood.gasStation')}</p>
               <p className="text-sm font-medium">{t('neighborhood.gasStationName')}</p>

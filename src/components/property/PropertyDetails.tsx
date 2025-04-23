@@ -28,11 +28,11 @@ const PropertyDetails = () => {
   return (
     <div className="mt-6">
       <PropertyHeader />
-      <NeighborhoodInfo />
       <PropertyKeyDetails 
         onScheduleTour={openWhatsAppSchedule}
         onContactAgent={openWhatsAppContact}
       />
+      <NeighborhoodInfo />
       <PropertyFeatures />
     </div>
   );

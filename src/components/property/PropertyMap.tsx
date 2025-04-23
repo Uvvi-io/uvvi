@@ -1,9 +1,10 @@
 
-import React, { useEffect, useRef } from 'react';
-import { MapPin } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { MapPin, AlertCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useProperty } from '@/hooks/useProperty';
+import { toast } from '@/components/ui/use-toast';
 
 // Define types for the Google Maps window object
 declare global {
@@ -19,20 +20,53 @@ const PropertyMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
   const { data } = useProperty();
+  const [mapError, setMapError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     // Function to geocode address and initialize map
     const initializeMapWithAddress = async () => {
-      if (!data?.property) return;
+      if (!data?.property) {
+        setIsLoading(false);
+        return;
+      }
 
       const { address, city, state, zip_code } = data.property;
       const fullAddress = `${address}, ${city}, ${state} ${zip_code}`;
       
       try {
+        setIsLoading(true);
+        setMapError(null);
+        
         // Get the API key from Supabase Edge Function
-        const { data: apiKeyData } = await supabase.functions.invoke('get-google-maps-key');
-        const apiKey = apiKeyData.key;
-
+        const { data: apiKeyResponse, error: apiKeyError } = await supabase.functions.invoke('get-google-maps-key');
+        
+        if (apiKeyError || !apiKeyResponse) {
+          console.error('Error fetching Google Maps API key:', apiKeyError);
+          setMapError('Failed to load Google Maps API key');
+          setIsLoading(false);
+          toast({
+            title: "Error",
+            description: "Failed to load Google Maps API key. Please check the Supabase edge function.",
+            variant: "destructive"
+          });
+          return;
+        }
+        
+        const apiKey = apiKeyResponse.key;
+        
+        if (!apiKey) {
+          console.error('Google Maps API key is missing');
+          setMapError('Google Maps API key is not configured');
+          setIsLoading(false);
+          toast({
+            title: "Error",
+            description: "Google Maps API key is not configured properly.",
+            variant: "destructive"
+          });
+          return;
+        }
+        
         // Function to load the Google Maps script
         const loadGoogleMapsScript = () => {
           // Check if script is already loaded
@@ -47,8 +81,22 @@ const PropertyMap = () => {
           script.async = true;
           script.defer = true;
           
+          // Set up error handling for the script
+          script.onerror = () => {
+            console.error('Failed to load Google Maps script');
+            setMapError('Failed to load Google Maps');
+            setIsLoading(false);
+            toast({
+              title: "Error",
+              description: "Failed to load Google Maps. Please check if the API key is valid and Maps JavaScript API is enabled.",
+              variant: "destructive"
+            });
+          };
+          
           // Define the callback function
-          window.initMap = () => geocodeAndInitMap(fullAddress);
+          window.initMap = () => {
+            geocodeAndInitMap(fullAddress);
+          };
           
           // Append the script to the DOM
           document.head.appendChild(script);
@@ -60,7 +108,7 @@ const PropertyMap = () => {
             const geocoder = new window.google.maps.Geocoder();
             
             geocoder.geocode({ address }, (results: any, status: any) => {
-              if (status === 'OK' && results[0]) {
+              if (status === 'OK' && results && results[0]) {
                 const propertyLocation = results[0].geometry.location;
                 
                 // Create a new map
@@ -79,8 +127,21 @@ const PropertyMap = () => {
                   title: address,
                   animation: window.google.maps.Animation.DROP,
                 });
+                
+                setIsLoading(false);
+              } else {
+                console.error('Geocode was not successful for the following reason:', status);
+                setMapError(`Failed to find location: ${status}`);
+                setIsLoading(false);
+                toast({
+                  title: "Error",
+                  description: `Failed to find property location: ${status}`,
+                  variant: "destructive"
+                });
               }
             });
+          } else {
+            setIsLoading(false);
           }
         };
         
@@ -88,6 +149,13 @@ const PropertyMap = () => {
         loadGoogleMapsScript();
       } catch (error) {
         console.error('Error initializing map:', error);
+        setMapError('Failed to initialize map');
+        setIsLoading(false);
+        toast({
+          title: "Error",
+          description: "Failed to initialize map",
+          variant: "destructive"
+        });
       }
     };
     
@@ -112,7 +180,20 @@ const PropertyMap = () => {
         className="relative h-[300px] w-full"
         aria-label="Map showing property location"
       >
-        {!data?.property && (
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 bg-opacity-50">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-estate-primary"></div>
+          </div>
+        )}
+        
+        {mapError && !isLoading && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-estate-gray-dark bg-gray-100">
+            <AlertCircle size={24} className="mb-2 text-red-500" />
+            <p className="text-sm text-center px-4">{mapError}</p>
+          </div>
+        )}
+        
+        {!data?.property && !isLoading && !mapError && (
           <div className="absolute inset-0 flex items-center justify-center text-estate-gray-dark">
             <p className="text-sm">{t('property.address')}</p>
           </div>

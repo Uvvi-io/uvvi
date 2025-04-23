@@ -5,7 +5,6 @@ import ImageCarousel from '@/components/property/ImageCarousel';
 import PropertyDetails from '@/components/property/PropertyDetails';
 import PropertyMap from '@/components/property/PropertyMap';
 import ContactForm from '@/components/property/ContactForm';
-import NeighborhoodInfo from '@/components/property/NeighborhoodInfo';
 
 const Index = () => {
   return (
@@ -31,9 +30,6 @@ const Index = () => {
               </div>
               <div id="property-map">
                 <PropertyMap />
-              </div>
-              <div id="neighborhood-info">
-                <NeighborhoodInfo />
               </div>
             </div>
           </div>

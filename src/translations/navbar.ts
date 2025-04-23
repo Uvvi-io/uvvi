@@ -1,10 +1,9 @@
-
 import { TranslationDict } from './types';
 
 export const navbarTranslations: TranslationDict = {
   'site.title': {
-    en: 'EstateVista',
-    es: 'EstateVista',
+    en: 'Uvvi',
+    es: 'Uvvi',
   },
   'language.english': {
     en: 'English',

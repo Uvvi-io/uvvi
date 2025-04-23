@@ -9,7 +9,121 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      properties: {
+        Row: {
+          address: string
+          baths: number
+          beds: number
+          city: string
+          created_at: string
+          description: string
+          id: string
+          price: number
+          square_feet: number
+          state: string
+          title: string
+          updated_at: string
+          year_built: number
+          zip_code: string
+        }
+        Insert: {
+          address: string
+          baths: number
+          beds: number
+          city: string
+          created_at?: string
+          description: string
+          id?: string
+          price: number
+          square_feet: number
+          state: string
+          title: string
+          updated_at?: string
+          year_built: number
+          zip_code: string
+        }
+        Update: {
+          address?: string
+          baths?: number
+          beds?: number
+          city?: string
+          created_at?: string
+          description?: string
+          id?: string
+          price?: number
+          square_feet?: number
+          state?: string
+          title?: string
+          updated_at?: string
+          year_built?: number
+          zip_code?: string
+        }
+        Relationships: []
+      }
+      property_features: {
+        Row: {
+          created_at: string
+          feature_name: string
+          feature_type: string
+          id: string
+          property_id: string
+        }
+        Insert: {
+          created_at?: string
+          feature_name: string
+          feature_type: string
+          id?: string
+          property_id: string
+        }
+        Update: {
+          created_at?: string
+          feature_name?: string
+          feature_type?: string
+          id?: string
+          property_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_features_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_images: {
+        Row: {
+          created_at: string
+          id: string
+          is_primary: boolean | null
+          property_id: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean | null
+          property_id: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_primary?: boolean | null
+          property_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_images_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

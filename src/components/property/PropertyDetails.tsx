@@ -3,7 +3,7 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import PropertyHeader from './PropertyHeader';
 import PropertyKeyDetails from './PropertyKeyDetails';
-import PropertyDescription from './PropertyDescription';
+import NeighborhoodInfo from './NeighborhoodInfo';
 import PropertyFeatures from './PropertyFeatures';
 
 const PropertyDetails = () => {
@@ -28,11 +28,11 @@ const PropertyDetails = () => {
   return (
     <div className="mt-6">
       <PropertyHeader />
+      <NeighborhoodInfo />
       <PropertyKeyDetails 
         onScheduleTour={openWhatsAppSchedule}
         onContactAgent={openWhatsAppContact}
       />
-      <PropertyDescription />
       <PropertyFeatures />
     </div>
   );

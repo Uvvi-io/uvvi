@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Coffee, Building, Trees } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -18,7 +17,7 @@ const PropertyFeatures = () => {
       {/* Tabs for larger screens */}
       <div className="hidden md:block">
         <Tabs defaultValue="interior" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-4">
+          <TabsList className="grid grid-cols-5 mb-4">
             <TabsTrigger value="interior" className="text-estate-gray-dark">
               <Coffee size={18} className="mr-2 text-estate-primary" />
               {t('property.interiorFeatures')}
@@ -34,6 +33,10 @@ const PropertyFeatures = () => {
             <TabsTrigger value="location" className="text-estate-gray-dark">
               <Trees size={18} className="mr-2 text-estate-primary" />
               {t('property.location')}
+            </TabsTrigger>
+            <TabsTrigger value="description" className="text-estate-gray-dark">
+              <Trees size={18} className="mr-2 text-estate-primary" />
+              {t('property.aboutHome')}
             </TabsTrigger>
           </TabsList>
           
@@ -79,6 +82,14 @@ const PropertyFeatures = () => {
               <li>Easy access to major highways</li>
               <li>Excellent school district</li>
             </ul>
+          </TabsContent>
+
+          <TabsContent value="description" className="p-4 bg-white rounded-md border">
+            <div className="text-estate-gray-dark space-y-4">
+              <p>{t('property.description1')}</p>
+              <p>{t('property.description2')}</p>
+              <p>{t('property.description3')}</p>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
@@ -162,6 +173,23 @@ const PropertyFeatures = () => {
               <li>Easy access to major highways</li>
               <li>Excellent school district</li>
             </ul>
+          </CollapsibleContent>
+        </Collapsible>
+        
+        <Collapsible className="border rounded-md overflow-hidden">
+          <CollapsibleTrigger className="flex items-center justify-between w-full p-3 bg-estate-gray-light hover:bg-estate-gray-light/80 transition-colors">
+            <div className="flex items-center">
+              <Trees size={18} className="mr-2 text-estate-primary" />
+              <span className="font-semibold text-estate-gray-dark">{t('property.aboutHome')}</span>
+            </div>
+            <ChevronDown className="h-5 w-5 text-estate-gray-dark transition-transform duration-200" />
+          </CollapsibleTrigger>
+          <CollapsibleContent className="p-3 bg-white">
+            <div className="text-estate-gray-dark space-y-4">
+              <p>{t('property.description1')}</p>
+              <p>{t('property.description2')}</p>
+              <p>{t('property.description3')}</p>
+            </div>
           </CollapsibleContent>
         </Collapsible>
       </div>
